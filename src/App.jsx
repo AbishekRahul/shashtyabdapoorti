@@ -141,23 +141,75 @@ function IconPin() {
 
 const ICONS = { date_1: IconCalendar, date_2: IconCalendar, muhurtham: IconClock, venue: IconPin };
 
-// ── CURTAIN ───────────────────────────────────────────────────────────────────
+// ── CURTAIN & MANDALA ──────────────────────────────────────────────────────────
+function MandalaHalf({ side }) {
+  // A majestic 12-point petal mandala
+  return (
+    <svg className={`mandala mandala--${side}`} viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="grad1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#D4A017" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="#8B1A2E" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <g className="mandala__spin" style={{ transformOrigin: '100px 100px' }}>
+        <circle cx="100" cy="100" r="95" stroke="rgba(212,160,23,0.15)" fill="none" strokeWidth="1" />
+        <circle cx="100" cy="100" r="88" stroke="rgba(212,160,23,0.3)" fill="none" strokeWidth="0.5" strokeDasharray="4 4" />
+        <circle cx="100" cy="100" r="70" stroke="rgba(212,160,23,0.2)" fill="none" strokeWidth="1" />
+        <circle cx="100" cy="100" r="30" fill="url(#grad1)" />
+        
+        {/* Outer 24 Petals */}
+        {[...Array(24)].map((_, i) => (
+          <path key={`out-${i}`} d="M100,30 Q115,10 100,4 Q85,10 100,30" 
+                transform={`rotate(${i * 15} 100 100)`} 
+                fill="none" stroke="rgba(212,160,23,0.35)" strokeWidth="0.75" />
+        ))}
+        {/* Inner 12 Lotus Petals */}
+        {[...Array(12)].map((_, i) => (
+          <path key={`in-${i}`} d="M100,70 Q120,45 100,16 Q80,45 100,70" 
+                transform={`rotate(${i * 30} 100 100)`} 
+                fill="rgba(212,160,23,0.06)" stroke="rgba(212,160,23,0.5)" strokeWidth="1" />
+        ))}
+        {/* Diamond accents */}
+        {[...Array(12)].map((_, i) => (
+          <path key={`dia-${i}`} d="M100,82 L104,76 L100,70 L96,76 Z" 
+                transform={`rotate(${i * 30 + 15} 100 100)`} 
+                fill="rgba(212,160,23,0.8)" />
+        ))}
+      </g>
+    </svg>
+  );
+}
+
 function CurtainReveal() {
   const less = useReducedMotion();
   if (less) return null;
   return (
     <Motion.div className="curtain"
       initial={{ opacity: 1 }} animate={{ opacity: 0, pointerEvents: 'none' }}
-      transition={{ delay: 1.3, duration: 0.45 }} aria-hidden="true"
+      transition={{ delay: 2.2, duration: 0.6 }} aria-hidden="true"
     >
       <Motion.div className="curtain__panel curtain__panel--left"
         initial={{ x: 0 }} animate={{ x: '-100%' }}
-        transition={{ duration: 1.35, ease: [0.76, 0, 0.24, 1] }}
-      />
+        transition={{ duration: 1.5, delay: 1.4, ease: [0.76, 0, 0.24, 1] }}
+      >
+        <MandalaHalf side="left" />
+      </Motion.div>
       <Motion.div className="curtain__panel curtain__panel--right"
         initial={{ x: 0 }} animate={{ x: '100%' }}
-        transition={{ duration: 1.35, ease: [0.76, 0, 0.24, 1] }}
-      />
+        transition={{ duration: 1.5, delay: 1.4, ease: [0.76, 0, 0.24, 1] }}
+      >
+        <MandalaHalf side="right" />
+      </Motion.div>
+
+      {/* Central lock/emblem that dissolves before the doors open */}
+      <Motion.div className="curtain__centerpiece"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: [0, 1, 1, 0], scale: [0.8, 1, 1, 1.25] }}
+        transition={{ duration: 2.4, times: [0, 0.15, 0.6, 1], ease: "easeInOut" }}
+      >
+        <div className="curtain-om">ௐ</div>
+      </Motion.div>
     </Motion.div>
   );
 }

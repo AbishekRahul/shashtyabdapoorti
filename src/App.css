@@ -31,8 +31,46 @@
 .curtain__panel {
   background: linear-gradient(160deg, #3D0A18 0%, #6B1220 35%, #4A0D1A 65%, #1E0509 100%);
 }
-.curtain__panel--left  { border-right: 1px solid rgba(212,160,23,0.22); }
-.curtain__panel--right { border-left:  1px solid rgba(212,160,23,0.22); }
+.curtain__panel--left  { border-right: 1px solid rgba(212,160,23,0.3); }
+.curtain__panel--right { border-left:  1px solid rgba(212,160,23,0.3); }
+
+/* ── CURTAIN MANDALA ─────────────────────────────────────────── */
+.mandala {
+  position: absolute;
+  top: 50%;
+  width: clamp(280px, 45vh, 600px);
+  height: clamp(280px, 45vh, 600px);
+  transform: translateY(-50%);
+  opacity: 0.8;
+}
+.mandala--left {
+  right: 0;
+  transform: translate(50%, -50%);
+}
+.mandala--right {
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+.mandala__spin {
+  animation: mandala-spin 20s linear infinite;
+}
+@keyframes mandala-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.curtain__centerpiece {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none; z-index: 101;
+}
+.curtain-om {
+  font-family: var(--font-tamil);
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  color: var(--gold-bright);
+  text-shadow: 0 0 30px rgba(245,200,66,0.6), 0 0 100px rgba(245,200,66,0.2);
+  transform: translate(2px, -4px); /* optical adjustment */
+}
 
 /* ── FLOATING JASMINE ────────────────────────────────────────── */
 .floating-jasmine { position: fixed; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
