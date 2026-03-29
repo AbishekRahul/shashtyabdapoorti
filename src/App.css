@@ -61,8 +61,11 @@
 
 .curtain__centerpiece {
   position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
   pointer-events: none; z-index: 101;
+}
+.curtain-om-wrapper {
+  display: flex; flex-direction: column; align-items: center; gap: 32px;
 }
 .curtain-om {
   font-family: var(--font-tamil);
@@ -70,6 +73,13 @@
   color: var(--gold-bright);
   text-shadow: 0 0 30px rgba(245,200,66,0.6), 0 0 100px rgba(245,200,66,0.2);
   transform: translate(2px, -4px); /* optical adjustment */
+}
+.curtain-tap-hint {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-light);
 }
 
 /* ── FLOATING JASMINE ────────────────────────────────────────── */
@@ -83,6 +93,39 @@
 
 /* ── PAGE SHELL ──────────────────────────────────────────────── */
 .page { position: relative; z-index: 3; overflow: hidden; }
+
+/* ── AUDIO CONTROLS ──────────────────────────────────────────── */
+.audio-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--glass);
+  border: 1px solid rgba(212,160,23,0.3);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+.audio-toggle:hover {
+  background: rgba(212,160,23,0.15);
+  transform: scale(1.05);
+}
+.audio-toggle--playing {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 15px rgba(212,160,23,0.2);
+}
+.audio-toggle--muted {
+  opacity: 0.7;
+}
 
 /* ── SHARED UTILITIES ────────────────────────────────────────── */
 .section-kicker {

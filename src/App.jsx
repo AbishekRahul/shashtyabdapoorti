@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion as Motion, useReducedMotion } from 'framer-motion';
 import './App.css';
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const CEREMONY = [
-  { id: 'date_1', label: 'Day 1 - Rudra Ekadashini', value: '18 April 2026' },
-  { id: 'date_2', label: 'Day 2 - Shashtyabdapoorti', value: '19 April 2026' },
+  { id: 'date_1', label: 'Day 1 - Rudra Ekadashi', value: '18 April 2026' },
+  { id: 'date_2', label: 'Day 2 - Shashtiapdapoorthi', value: '19 April 2026' },
   { id: 'muhurtham', label: 'Muhurtham', value: '10:00 AM – 11:30 AM' },
   { id: 'venue', label: 'Venue', value: 'VilludaiyanPattu Marriage Hall', sub: 'Neyveli – 607 801' },
 ];
@@ -157,59 +157,76 @@ function MandalaHalf({ side }) {
         <circle cx="100" cy="100" r="88" stroke="rgba(212,160,23,0.3)" fill="none" strokeWidth="0.5" strokeDasharray="4 4" />
         <circle cx="100" cy="100" r="70" stroke="rgba(212,160,23,0.2)" fill="none" strokeWidth="1" />
         <circle cx="100" cy="100" r="30" fill="url(#grad1)" />
-        
+
         {/* Outer 24 Petals */}
         {[...Array(24)].map((_, i) => (
-          <path key={`out-${i}`} d="M100,30 Q115,10 100,4 Q85,10 100,30" 
-                transform={`rotate(${i * 15} 100 100)`} 
-                fill="none" stroke="rgba(212,160,23,0.35)" strokeWidth="0.75" />
+          <path key={`out-${i}`} d="M100,30 Q115,10 100,4 Q85,10 100,30"
+            transform={`rotate(${i * 15} 100 100)`}
+            fill="none" stroke="rgba(212,160,23,0.35)" strokeWidth="0.75" />
         ))}
         {/* Inner 12 Lotus Petals */}
         {[...Array(12)].map((_, i) => (
-          <path key={`in-${i}`} d="M100,70 Q120,45 100,16 Q80,45 100,70" 
-                transform={`rotate(${i * 30} 100 100)`} 
-                fill="rgba(212,160,23,0.06)" stroke="rgba(212,160,23,0.5)" strokeWidth="1" />
+          <path key={`in-${i}`} d="M100,70 Q120,45 100,16 Q80,45 100,70"
+            transform={`rotate(${i * 30} 100 100)`}
+            fill="rgba(212,160,23,0.06)" stroke="rgba(212,160,23,0.5)" strokeWidth="1" />
         ))}
         {/* Diamond accents */}
         {[...Array(12)].map((_, i) => (
-          <path key={`dia-${i}`} d="M100,82 L104,76 L100,70 L96,76 Z" 
-                transform={`rotate(${i * 30 + 15} 100 100)`} 
-                fill="rgba(212,160,23,0.8)" />
+          <path key={`dia-${i}`} d="M100,82 L104,76 L100,70 L96,76 Z"
+            transform={`rotate(${i * 30 + 15} 100 100)`}
+            fill="rgba(212,160,23,0.8)" />
         ))}
       </g>
     </svg>
   );
 }
 
-function CurtainReveal() {
+function CurtainReveal({ started, onStart }) {
   const less = useReducedMotion();
   if (less) return null;
   return (
     <Motion.div className="curtain"
-      initial={{ opacity: 1 }} animate={{ opacity: 0, pointerEvents: 'none' }}
-      transition={{ delay: 2.2, duration: 0.6 }} aria-hidden="true"
+      initial={{ opacity: 1 }} animate={started ? { opacity: 0, pointerEvents: 'none' } : {}}
+      transition={{ delay: 1.4, duration: 0.6 }} aria-hidden="true"
     >
       <Motion.div className="curtain__panel curtain__panel--left"
-        initial={{ x: 0 }} animate={{ x: '-100%' }}
-        transition={{ duration: 1.5, delay: 1.4, ease: [0.76, 0, 0.24, 1] }}
+        initial={{ x: 0 }} animate={started ? { x: '-100%' } : {}}
+        transition={{ duration: 1.5, delay: 0.6, ease: [0.76, 0, 0.24, 1] }}
       >
         <MandalaHalf side="left" />
       </Motion.div>
       <Motion.div className="curtain__panel curtain__panel--right"
-        initial={{ x: 0 }} animate={{ x: '100%' }}
-        transition={{ duration: 1.5, delay: 1.4, ease: [0.76, 0, 0.24, 1] }}
+        initial={{ x: 0 }} animate={started ? { x: '100%' } : {}}
+        transition={{ duration: 1.5, delay: 0.6, ease: [0.76, 0, 0.24, 1] }}
       >
         <MandalaHalf side="right" />
       </Motion.div>
 
       {/* Central lock/emblem that dissolves before the doors open */}
-      <Motion.div className="curtain__centerpiece"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: [0, 1, 1, 0], scale: [0.8, 1, 1, 1.25] }}
-        transition={{ duration: 2.4, times: [0, 0.15, 0.6, 1], ease: "easeInOut" }}
-      >
-        <div className="curtain-om">ௐ</div>
-      </Motion.div>
+      <AnimatePresence>
+        {!started && (
+          <Motion.div className="curtain__centerpiece"
+            onClick={onStart}
+            style={{ cursor: 'pointer', pointerEvents: 'auto' }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.3 }}
+            transition={{ duration: 0.6 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="curtain-om-wrapper">
+              <div className="curtain-om">ௐ</div>
+              <Motion.div className="curtain-tap-hint"
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                Tap to Open
+              </Motion.div>
+            </div>
+          </Motion.div>
+        )}
+      </AnimatePresence>
     </Motion.div>
   );
 }
@@ -259,14 +276,14 @@ function HeroSection() {
           animate={{ opacity: 1, letterSpacing: '0.28em' }}
           transition={{ duration: 0.9, delay: 1.8 }}
         >
-          Shashtyabdapoorti Invitation
+          Shashtiapdapoorthi Invitation
         </Motion.p>
 
         <Motion.p className="hero__tamil"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 2.0 }}
         >
-          அருபதம் கல்யாணம் · ஸ்ரீ கணேஷாய நமஃ
+          அறுபதாம் கல்யாணம்
         </Motion.p>
 
         <Motion.h1 className="hero__names"
@@ -346,8 +363,8 @@ function BlessingSection() {
         </Motion.p>
         <Motion.blockquote className="blessing__quote" {...fadeUp(0.25)}>
           <span className="blessing__quote-mark">"</span>
-          On the sacred turning of sixty years, we invite you to witness vows renewed in
-          dharma, gratitude, and eternal joy.
+          As our father completes sixty wonderful years, we invite you to share in the joy of
+          renewed promises and cherished blessings.
           <span className="blessing__quote-mark">"</span>
         </Motion.blockquote>
         <Motion.p className="blessing__tamil" {...fadeUp(0.35)}>
@@ -360,7 +377,7 @@ function BlessingSection() {
           transition={{ duration: 0.7, delay: 0.45 }}
         >
           <span className="milestone-number">60</span>
-          <span className="milestone-label">Years of Grace &amp; Companionship</span>
+          <span className="milestone-label">Years of Life filled with Love, Strength &amp; Blessings</span>
         </Motion.div>
       </div>
     </section>
@@ -415,11 +432,10 @@ function VenueSection() {
             <div className="hosted-names">
               <p className="hosted-name">Koushik & Swathi</p>
               <p className="hosted-name">Rahul & Gowry</p>
-              <p className="hosted-name">Our families bundle of joy Drithi </p>
+              <p className="hosted-name">Our family's bundle of joy, Drithi </p>
             </div>
             <div className="hosted__blessing">
-              We seek your blessings and cherished presence as our beloved parents
-              complete sixty sacred years together in grace and devotion.
+              We seek your blessings and cherished presence on this auspicious occasion.
             </div>
           </Motion.div>
         </div>
@@ -434,7 +450,7 @@ function CouplePhotoSection() {
       <div className="couple-photo__inner">
         <Motion.div className="section-header" {...fadeUp()}>
           <p className="section-kicker">The Celebrated Couple</p>
-          <h2 className="section-title">Shashtyabdapoorti</h2>
+          <h2 className="section-title">Shashtiapdapoorthi</h2>
         </Motion.div>
 
         <Motion.div className="couple-photo__frame-wrap"
@@ -466,8 +482,8 @@ function CouplePhotoSection() {
             transition={{ duration: 0.7, delay: 0.3 }}
           >
             <p className="couple-photo__caption-text">
-              Sixty years of morning prayers, shared meals, and quiet devotion —
-              dressed in the colours of grace, standing at the threshold of a new chapter.
+              Eternity of togetherness, countless shared meals, and quiet devotion —
+              along with a lifetime of  "who's right"  moments — now stepping into a blessed new chapter.
             </p>
           </Motion.div>
         </Motion.div>
@@ -490,11 +506,68 @@ function Footer() {
   );
 }
 
+// ── AUDIO ─────────────────────────────────────────────────────────────────────
+function BackgroundAudio({ started }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    const audioSrc = import.meta.env.BASE_URL + 'kanne-kaniye.mp3';
+    audioRef.current = new Audio(audioSrc);
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.55;
+
+    return () => {
+      audioRef.current?.pause();
+      audioRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (started && audioRef.current && !isPlaying) {
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => { });
+    }
+  }, [started, isPlaying]);
+
+  const toggleMute = (e) => {
+    e.stopPropagation();
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => { });
+    }
+  };
+
+  return (
+    <button className={`audio-toggle ${isPlaying ? 'audio-toggle--playing' : 'audio-toggle--muted'} ${started ? '' : 'hidden'}`}
+      onClick={toggleMute} aria-label="Toggle Background Music">
+      {isPlaying ? (
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <line x1="23" y1="9" x2="17" y2="15"></line>
+          <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+      )}
+    </button>
+  );
+}
+
 // ── APP ───────────────────────────────────────────────────────────────────────
 export default function App() {
+  const [started, setStarted] = useState(false);
+
   return (
     <>
-      <CurtainReveal />
+      <BackgroundAudio started={started} />
+      <CurtainReveal started={started} onStart={() => setStarted(true)} />
       <FloatingJasmine />
       <main className="page" role="main" id="main">
         <HeroSection />
