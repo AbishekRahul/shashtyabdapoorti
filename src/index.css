@@ -1,0 +1,11 @@
+/* ── GLOBAL RESET ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background-color: #0D0710;
+  color: #FDF3E3;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+#root { min-height: 100vh; }
