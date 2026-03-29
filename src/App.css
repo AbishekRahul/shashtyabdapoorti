@@ -321,17 +321,16 @@
   text-transform: uppercase; color: rgba(212,160,23,0.6); margin-bottom: 4px;
 }
 .venue__dress-value { font-size: 0.9rem; color: var(--ivory); }
-.venue__map-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 22px; border-radius: 50px;
-  border: 1.5px solid var(--gold); color: var(--gold-light);
-  font-family: var(--font-body); font-size: 0.86rem; font-weight: 600;
-  text-decoration: none; letter-spacing: 0.05em;
-  transition: background 0.3s, border-color 0.3s;
+.venue__map-container {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid rgba(212,160,23,0.3);
+  background: rgba(13,7,16,0.5);
 }
-.venue__map-btn .detail-icon { width: 15px; height: 15px; }
-.venue__map-btn:hover {
-  background: rgba(212,160,23,0.1); border-color: var(--gold-bright);
+.venue__map-container iframe {
+  display: block;
+  filter: sepia(0.2) hue-rotate(345deg) saturate(0.8);
 }
 .hosted-names { margin: 14px 0 8px; }
 .hosted-name {
@@ -455,12 +454,13 @@
 
 /* ── RESPONSIVE ──────────────────────────────────────────────── */
 @media (min-width: 640px) {
-  .cards-grid { grid-template-columns: repeat(3, 1fr); }
+  .cards-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (min-width: 768px) {
   .rituals__grid { grid-template-columns: repeat(2, 1fr); }
   .venue__grid { grid-template-columns: 1.2fr 1fr; }
 }
 @media (min-width: 1024px) {
+  .cards-grid { grid-template-columns: repeat(4, 1fr); }
   .rituals__grid { grid-template-columns: repeat(4, 1fr); }
 }

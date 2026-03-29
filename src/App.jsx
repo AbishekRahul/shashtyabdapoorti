@@ -4,8 +4,9 @@ import './App.css';
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const CEREMONY = [
-  { id: 'date', label: 'Auspicious Date', value: '19 April 2026', sub: 'Kirthigai Nakshatra' },
-  { id: 'muhurtham', label: 'Muhurtham', value: '10:00 AM – 11:30 AM', sub: 'Sacred Sunrise Hour' },
+  { id: 'date_1', label: 'Day 1 - Rudra Ekadashini', value: '18 April 2026' },
+  { id: 'date_2', label: 'Day 2 - Shashtyabdapoorti', value: '19 April 2026' },
+  { id: 'muhurtham', label: 'Muhurtham', value: '10:00 AM – 11:30 AM' },
   { id: 'venue', label: 'Venue', value: 'VilludaiyanPattu Marriage Hall', sub: 'Neyveli – 607 801' },
 ];
 
@@ -138,7 +139,7 @@ function IconPin() {
   );
 }
 
-const ICONS = { date: IconCalendar, muhurtham: IconClock, venue: IconPin };
+const ICONS = { date_1: IconCalendar, date_2: IconCalendar, muhurtham: IconClock, venue: IconPin };
 
 // ── CURTAIN ───────────────────────────────────────────────────────────────────
 function CurtainReveal() {
@@ -340,11 +341,18 @@ function VenueSection() {
                 <p className="venue__info-value">10:00 AM – 11:30 AM</p>
               </div>
             </div>
-            <Motion.a href="https://maps.google.com" target="_blank" rel="noopener noreferrer"
-              className="venue__map-btn" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-            >
-              <IconPin /> View on Map
-            </Motion.a>
+            <div className="venue__map-container">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3908.298593287593!2d79.51610711080146!3d11.602048343374815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a54b72a49f04049%3A0x5ef8ca318eeb0c60!2sVilludaiyanPattu%20Marriage%20Hall!5e0!3m2!1sen!2sin!4v1774802468067!5m2!1sen!2sin"
+                width="100%"
+                height="240"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Venue Map"
+              ></iframe>
+            </div>
           </Motion.div>
 
           <Motion.div className="venue__hosted-card"
@@ -424,7 +432,6 @@ function Footer() {
         <Motion.p className="footer__tamil" {...fadeUp()}>
           ஓம் ஷாந்தி ஷாந்தி ஷாந்தி
         </Motion.p>
-        <p className="footer__text">Shashtyabdapoorti · 19 April 2026 · Neyveli</p>
         <p className="footer__copy">With love &amp; blessings from the family</p>
       </div>
     </footer>
