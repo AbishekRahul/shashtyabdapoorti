@@ -368,7 +368,7 @@ function BlessingSection() {
           <span className="blessing__quote-mark">"</span>
         </Motion.blockquote>
         <Motion.p className="blessing__tamil" {...fadeUp(0.35)}>
-          வந்து ஆசீர்வதிக்க வேண்டுகிறோம்
+          வருகை தந்து ஆசீர்வதிக்க வேண்டுகிறோம்
         </Motion.p>
         <Motion.div className="blessing__milestone"
           initial={{ opacity: 0, scale: 0.88 }}
@@ -432,7 +432,7 @@ function VenueSection() {
             <div className="hosted-names">
               <p className="hosted-name">Koushik & Swathi</p>
               <p className="hosted-name">Rahul & Gowry</p>
-              <p className="hosted-name">Our family's bundle of joy, Drithi </p>
+              <p className="hosted-name">Our family's bundle of joy, Dhrithi </p>
             </div>
             <div className="hosted__blessing">
               We seek your blessings and cherished presence on this auspicious occasion.
