@@ -432,7 +432,7 @@ function VenueSection() {
             <div className="hosted-names">
               <p className="hosted-name">Koushik & Swathi</p>
               <p className="hosted-name">Rahul & Gowry</p>
-              <p className="hosted-name">Our family's bundle of joy, Dhrithi </p>
+              <p className="hosted-name">& Our family's bundle of joy, Dhrithi </p>
             </div>
             <div className="hosted__blessing">
               We seek your blessings and cherished presence on this auspicious occasion.
