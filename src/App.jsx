@@ -4,7 +4,7 @@ import './App.css';
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const CEREMONY = [
-  { id: 'date_1', label: 'Day 1 - Rudra Ekadashi', value: '18 April 2026' },
+  { id: 'date_1', label: 'Day 1 - Rudra Ekadashi', value: '18 April 2026', sub: 'Evening 5 PM onwards' },
   { id: 'date_2', label: 'Day 2 - Shashtiapdapoorthi', value: '19 April 2026' },
   { id: 'muhurtham', label: 'Muhurtham', value: '10:00 AM – 11:30 AM' },
   { id: 'venue', label: 'Venue', value: 'VilludaiyanPattu Marriage Hall', sub: 'Neyveli – 607 801' },
@@ -510,6 +510,7 @@ function Footer() {
 function BackgroundAudio({ started }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
+  const hasAutoPlayed = useRef(false);
 
   useEffect(() => {
     const audioSrc = import.meta.env.BASE_URL + 'kanne-kaniye.mp3';
@@ -524,10 +525,11 @@ function BackgroundAudio({ started }) {
   }, []);
 
   useEffect(() => {
-    if (started && audioRef.current && !isPlaying) {
+    if (started && audioRef.current && !hasAutoPlayed.current) {
+      hasAutoPlayed.current = true;
       audioRef.current.play().then(() => setIsPlaying(true)).catch(() => { });
     }
-  }, [started, isPlaying]);
+  }, [started]);
 
   const toggleMute = (e) => {
     e.stopPropagation();
